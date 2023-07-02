@@ -8,7 +8,7 @@ public class EndlessDungeon extends Agent {
 
     private Monster monster;
     private Merchant merchant;
-    private Player player;
+    private final Player player;
 
     private State<EndlessDungeon> currentState;
 
@@ -22,11 +22,8 @@ public class EndlessDungeon extends Agent {
 
     @Override
     public void update(){
-//        System.out.println(AsciiElements.BRICK_WALL.getValue());
         currentState.execute(this);
-//        System.out.println(AsciiElements.BRICK_WALL.getValue());
     }
-//    @Override
     public void changeState(State<EndlessDungeon> newState){
         currentState.exit(this);
         this.currentState = newState;
@@ -55,9 +52,5 @@ public class EndlessDungeon extends Agent {
 
     public Player getPlayer() {
         return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
     }
 }

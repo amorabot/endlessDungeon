@@ -17,19 +17,13 @@ public class Player {
         this.health = maxHealth;
 
         Sword sword = new Sword(new int[]{1,3}, 30, DamageTypes.SLASHING);
-        Bow bow = new Bow(2, 2, 10, DamageTypes.PIERCING);
-        Potion potion = new Potion(1, 5);
+        Bow bow = new Bow(2, 3, 12, DamageTypes.PIERCING);
+        Potion potion = new Potion(1, 10);
 
         this.inventory = new Inventory(sword, bow, potion, initialCoins);
     }
 
     public <T extends Monster> void attack(T enemy, Weapon weapon){
-//        enemy.takeDamage(weapon.getDamage(), weapon.getDmgType());
-//        if (weapon instanceof Sword){
-//
-//        } else if (weapon instanceof Bow){
-//
-//        }
         enemy.takeDamage(this, weapon);
     }
     public <T extends Monster> void takeDamage(T enemy){
@@ -58,5 +52,11 @@ public class Player {
 
     public Inventory getInventory() {
         return inventory;
+    }
+    public void pay(int itemCost){
+        getInventory().setCoins(getInventory().getCoins()-itemCost);
+    }
+    public void loot(int lootedCoins){
+        getInventory().setCoins(getInventory().getCoins()+lootedCoins);
     }
 }

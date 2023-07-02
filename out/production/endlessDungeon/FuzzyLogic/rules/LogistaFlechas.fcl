@@ -1,0 +1,33 @@
+FUNCTION_BLOCK lojistaflechas
+
+VAR_INPUT
+    quantidade_flechas : REAL; // Valor de entrada: quantidade de flechas disponiveis
+END_VAR
+
+VAR_OUTPUT
+    preco_venda : REAL; // Valor de saida: preco de venda das flechas
+END_VAR
+
+FUZZIFY quantidade_flechas
+    TERM baixa := (0, 1) (0, 1) (10, 0);
+    TERM media := (0, 0) (10, 1) (20, 0);
+    TERM alta := (10, 0) (20, 1) (20, 1);
+END_FUZZIFY
+
+DEFUZZIFY preco_venda
+    TERM caro := (0, 1) (0, 1) (50, 0);
+    TERM razoavel := (0, 0) (50, 1) (100, 0);
+    TERM barato := (50, 0) (100, 1) (100, 1);
+END_DEFUZZIFY
+
+RULEBLOCK regras
+    AND : MIN;
+    OR : MAX;
+    ACT : MIN;
+
+    RULE 1 : IF quantidade_flechas IS baixa THEN preco_venda IS caro;
+    RULE 2 : IF quantidade_flechas IS media THEN preco_venda IS razoavel;
+    RULE 3 : IF quantidade_flechas IS alta THEN preco_venda IS barato;
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

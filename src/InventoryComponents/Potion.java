@@ -12,7 +12,7 @@ public class Potion {
     public Potion(int heal, int maxCharges){
         this.heal = heal;
         this.maxCharges = maxCharges;
-        this.charges = maxCharges;
+        this.charges = 8;
     }
 
     public void use(Player player){
@@ -42,6 +42,10 @@ public class Potion {
 
     public int getCharges() {
         return charges;
+    }
+
+    public void setCharges(int charges) {
+        this.charges = charges;
     }
 
     public int getHeal() {

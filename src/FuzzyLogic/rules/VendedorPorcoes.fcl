@@ -1,0 +1,33 @@
+FUNCTION_BLOCK VendedorPocoes
+
+VAR_INPUT
+    quantidade_porcoes_jogador : REAL; // Valor de entrada: quantidade de poções do jogador
+END_VAR
+
+VAR_OUTPUT
+    chance_aparecer_npc : REAL; // Valor de saída: chance de o NPC aparecer
+END_VAR
+
+FUZZIFY quantidade_porcoes_jogador
+    TERM poucas := (0, 1) (0, 1) (5, 0);
+    TERM algumas := (0, 0) (5, 1) (10, 0);
+    TERM muitas := (5, 0) (10, 1) (10, 1);
+END_FUZZIFY
+
+DEFUZZIFY chance_aparecer_npc
+    TERM baixa := (0, 1) (0, 1) (0.5, 0);
+    TERM media := (0, 0) (0.5, 1) (1, 0);
+    TERM alta := (0.5, 0) (1, 1) (1, 1);
+END_DEFUZZIFY
+
+RULEBLOCK regras
+    AND : MIN;
+    OR : MAX;
+    ACT : MIN;
+
+    RULE 1 : IF quantidade_porcoes_jogador IS poucas THEN chance_aparecer_npc IS baixa;
+    RULE 2 : IF quantidade_porcoes_jogador IS algumas THEN chance_aparecer_npc IS media;
+    RULE 3 : IF quantidade_porcoes_jogador IS muitas THEN chance_aparecer_npc IS alta;
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK

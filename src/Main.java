@@ -1,15 +1,19 @@
 import Entities.Player;
-import States.*;
+import FuzzyLogic.FuzzyMachines.FletcherTax;
+import FuzzyLogic.FuzzyMachines.PotionmasterTax;
+import FuzzyLogic.FuzzyMachines.WeaponsmithTax;
+import States.EndlessDungeon;
+import States.Over;
 
 public class Main {
 
-    public static void main(String[] args){
-//        new DungeonStates(new Player(10, 20));
+    public static void main(String[] args) throws Exception {
         EndlessDungeon fsm = new EndlessDungeon(new Player(10, 20));
-//        State<EndlessDungeon> state = Battle.getInstance();
+
 
         while(!(fsm.getCurrentState() instanceof Over)){
             fsm.update();
         }
+
     }
 }

@@ -39,7 +39,7 @@ public class Battle extends State<EndlessDungeon>{
                     exception.printStackTrace();
                 }
                 if (!monster.isAlive()){
-                    dungeon.changeState(Over.getInstance());
+                    setNextEncounter(dungeon);
                     return;
                 }
                 System.out.println(monster.getName() + " RETALIATES! " + "*"+monster.getDamage()+" DMG*");
@@ -54,7 +54,7 @@ public class Battle extends State<EndlessDungeon>{
                     exception.printStackTrace();
                 }
                 if (!monster.isAlive()){
-                    dungeon.changeState(Over.getInstance());
+                    setNextEncounter(dungeon);
                     return;
                 }
                 System.out.println(monster.getName() + " RETALIATES! " + "*"+monster.getDamage()+" DMG*");
@@ -77,7 +77,7 @@ public class Battle extends State<EndlessDungeon>{
                 }
                 if (scapeRoll >= 13){
                     System.out.println("SUCCESSFUL ESCAPE! *" + scapeRoll + "*");
-                    dungeon.changeState(Battle.getInstance());
+                    dungeon.changeState(Shop.getInstance()); //Finding a merchant
                     return;
                 } else {
                     System.out.println("UNSUCCESSFUL ATTEMPT... YOU GET DAMAGED");
@@ -91,6 +91,8 @@ public class Battle extends State<EndlessDungeon>{
                     System.out.print("GULP");
                     Thread.sleep(500);
                     System.out.print(".");
+                    Thread.sleep(200);
+                    System.out.println(".");
                     Thread.sleep(500);
                     System.out.println(".");
                     Thread.sleep(700);
@@ -103,12 +105,15 @@ public class Battle extends State<EndlessDungeon>{
                 System.out.println("INVALID OPTION");
                 break;
         }
+        if (player.getHealth() <=0){
+            dungeon.changeState(Over.getInstance());
+        }
     }
 
     @Override
     public void enter(EndlessDungeon dungeon) {
         System.out.println("A NEW BATTLE BEGINS...");
-         generateMonster(dungeon);
+        generateMonster(dungeon);
     }
 
     @Override
@@ -135,9 +140,9 @@ public class Battle extends State<EndlessDungeon>{
         System.out.println("\n"+bottle.replace("#", playerPotions.getCharges()+"/"+playerPotions.getMaxCharges()).indent(20));
 
         if (player.getHealth()>0){
-            System.out.println(heart.repeat(player.getHealth()).indent(20));
+            System.out.println(("HP "+heart.repeat(player.getHealth())+"  $$$ " + player.getInventory().getCoins()).indent(15));
         } else {
-            System.out.println("( X . X )");
+            System.out.println("( X . X )".indent(20));
         }
 
         Monster dungeonMonster = dungeon.getMonster();
@@ -155,13 +160,6 @@ public class Battle extends State<EndlessDungeon>{
             monsterStatsElement = " --=DEAD=--" + dungeonMonster.getName()+ " " + dmg;
         }
         String monsterStatsLine = "\\\\  "+ monsterStatsElement + "\n";
-//        int fullSpacingLength = monsterStatsElement.length()-14;
-//        String spacing;
-//        if (fullSpacingLength < 2){
-//            spacing = " ";
-//        } else {
-//            spacing = " ".repeat(fullSpacingLength/2);
-//        }
         String enemyDeclarationLine = "//  " + "IN COMBAT WITH\n";
         System.out.print(enemyDeclarationLine.indent(18));
         System.out.println(monsterStatsLine.indent(18));
@@ -190,10 +188,25 @@ public class Battle extends State<EndlessDungeon>{
                 System.out.println("A NEW SLIME SLITHERS IN");
                 dungeon.setMonster(new Slime(Monsters.SLIME.toString()));
             }
-            default -> {
-                System.out.println("UNABLE TO GENERATE NEW MONSTER");
-//                return null;
-            }
+            default -> System.out.println("UNABLE TO GENERATE NEW MONSTER");
         }
+    }
+    private void setNextEncounter(EndlessDungeon dungeon){
+        lootEnemy(dungeon);
+
+        double shopRoll = Math.random();
+        if (shopRoll<= Shop.shopChance){
+            //The battle ends with a shop encounter
+            dungeon.changeState(Shop.getInstance());
+        } else {
+            //A new battle begins
+            dungeon.changeState(Battle.getInstance());
+        }
+    }
+    private void lootEnemy(EndlessDungeon dungeon){
+        //TODO: implementar loot variavel com base no inimigo
+        int coinRoll = 13 + (int)(Math.random()*(27-13) +1);
+        System.out.println("...YOU LOOT YOUR DEAD OPONENT AND FIND " +coinRoll+ " COINS");
+        dungeon.getPlayer().loot(coinRoll);
     }
 }

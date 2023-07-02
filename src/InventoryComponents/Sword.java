@@ -6,7 +6,7 @@ import Enums.SwordStates;
 public class Sword extends Weapon{
 
     int[] dmg;
-    SwordStates swordCondition;
+    SwordStates swordCondition = SwordStates.NORMAL;
 
     int durability;
     int maxDurability;
