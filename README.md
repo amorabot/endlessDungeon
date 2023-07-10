@@ -3,7 +3,7 @@
 
 ![image](https://github.com/amorabot/endlessDungeon/assets/16783145/a2c87940-d436-4c15-ad67-2900becf0bd7)
 
-## There are 4 main actions and 4 attributes the player needs to keep track of:
+## There are 4 main actions and 5 attributes the player needs to keep track of:
 
   Actions:
   * Sword attack (Diminishes it's durability)
@@ -16,6 +16,7 @@
   * Remaining arrows (Using a arrow may waste it in some cases...)
   * Potion charges (Tracks down how many uses of potions the player has left, each use regenerates a HP)
   * HP (Tracks the player's hit points, if it comes to 0... things may not end well)
+  * Coins (You get coins after every successful combat, it may serve you well in the shop)
 
 ## Once a player escapes a battle or gets lucky after one ends, The Shop may appear.
 
@@ -35,3 +36,13 @@ Every NPC has it's roster of items to sell. If you are low on the NPC item's sta
 For example: The Arms dealer will charge more for a repair if your sword is almost broken, since you really need it fixed.
 
 After you spend what you can or want, you may exit the shop or try to bargain (and get kicked out of there for good). Once you leave the shop, another battle begins
+
+# How to play this game:
+
+### Intellij IDE
+1. Go to the | <> Code | button and download the project's ZIP file
+2. Extract anywhere you want
+3. Go to "Open project" in your Intellij IDE and open the extracted project folder
+4. Setup you JDK environment (if not done previously)
+5. Go to src/Main
+6. Run the main class and resize your console!
